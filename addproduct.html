@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Product - Modern Store</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-color: #4361ee;
+    --primary-light: #4895ef;
+    --primary-lighter: #eef2ff;
+    --secondary-color: #3f37c9;
+    --accent-color: #4cc9f0;
+    --dark-color: #2b2d42;
+    --light-color: #f8f9fa;
+    --success-color: #38b000;
+    --warning-color: #ff9e00;
+    --gray-light: #e9ecef;
+    --gray-medium: #adb5bd;
+    --shadow: 0 10px 30px rgba(67, 97, 238, 0.15);
+    --radius: 16px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e3e9ff 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid rgba(67, 97, 238, 0.1);
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 35px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(76, 201, 240, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(72, 149, 239, 0.3) 0%, transparent 50%);
+    z-index: 0;
+}
+
+.header h2 {
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    font-size: 2.2rem;
+}
+
+.header p {
+    font-weight: 400;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+    font-size: 1.1rem;
+}
+
+.header i {
+    color: var(--accent-color);
+    margin-right: 10px;
+}
+
+/* Main content */
+.main-content {
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+    }
+}
+
+/* Form Section */
+.form-section {
+    background: white;
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    height: fit-content;
+    border: 1px solid rgba(67, 97, 238, 0.1);
+}
+
+.form-section h5 {
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+}
+
+.form-section h5 i {
+    color: var(--primary-color);
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 2px solid var(--gray-light);
+    transition: var(--transition);
+    font-size: 15px;
+    color: var(--dark-color);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-label i {
+    color: var(--primary-light);
+    font-size: 0.9rem;
+}
+
+/* Image Upload */
+.image-upload-container {
+    margin-bottom: 20px;
+}
+
+.image-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    border: 2px dashed var(--primary-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(76, 201, 240, 0.05));
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.image-preview:hover {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+    transform: translateY(-2px);
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: none;
+}
+
+.image-preview i {
+    font-size: 48px;
+    color: var(--primary-light);
+    margin-bottom: 10px;
+    transition: var(--transition);
+}
+
+.image-preview:hover i {
+    color: var(--primary-color);
+}
+
+.image-preview span {
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Product Display */
+.product-display {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.product-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid rgba(67, 97, 238, 0.1);
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(67, 97, 238, 0.2);
+}
+
+.product-image {
+    height: 250px;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(76, 201, 240, 0.05));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 20px;
+    transition: var(--transition);
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.default-img {
+    font-size: 80px;
+    color: var(--primary-light);
+    opacity: 0.7;
+}
+
+.product-details {
+    padding: 25px;
+}
+
+.product-details h4 {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+    font-size: 1.5rem;
+}
+
+.product-owner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    font-size: 15px;
+    background: rgba(67, 97, 238, 0.05);
+    padding: 8px 15px;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.product-owner i {
+    color: var(--primary-color);
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.price::before {
+    content: '$';
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+.product-counter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.product-counter i {
+    margin-right: 5px;
+}
+
+/* Navigation Buttons */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.btn-container button {
+    min-width: 140px;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 12px 25px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+#prevBtn {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+    color: white;
+    border: 2px solid var(--primary-color);
+}
+
+#prevBtn:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(67, 97, 238, 0.3);
+}
+
+#nextBtn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: 2px solid var(--secondary-color);
+}
+
+#nextBtn:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(67, 97, 238, 0.3);
+}
+
+/* Add Product Button */
+#addProductBtn {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-light));
+    color: white;
+    width: 100%;
+    padding: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    border: 2px solid var(--accent-color);
+}
+
+#addProductBtn:hover {
+    background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(76, 201, 240, 0.3);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--primary-color);
+    font-size: 14px;
+    border-top: 1px solid rgba(67, 97, 238, 0.1);
+    background: rgba(67, 97, 238, 0.03);
+    font-weight: 500;
+}
+
+.footer i {
+    color: var(--accent-color);
+    margin: 0 5px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--primary-color);
+}
+
+.empty-state i {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: var(--primary-light);
+    opacity: 0.7;
+}
+
+.empty-state h5 {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+/* Badge */
+.badge {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    border: 2px solid white;
+}
+
+/* Animation for product change */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .header {
+        padding: 25px 20px;
+    }
+    
+    .header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .btn-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-container button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h2><i class="fas fa-plus-circle"></i> Add Product</h2>
+        <p>Add your product details and image</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Form Section -->
+        <div class="form-section">
+            <h5><i class="fas fa-edit"></i> Product Details</h5>
+            
+            <form id="productForm">
+                <div class="mb-3">
+                    <label for="title" class="form-label">
+                        <i class="fas fa-tag"></i> Product Title
+                    </label>
+                    <input type="text" id="title" class="form-control" placeholder="Enter product name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="owner" class="form-label">
+                        <i class="fas fa-user"></i> Your Name
+                    </label>
+                    <input type="text" id="owner" class="form-control" placeholder="Enter your name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="price" class="form-label">
+                        <i class="fas fa-dollar-sign"></i> Price ($)
+                    </label>
+                    <input type="number" id="price" class="form-control" placeholder="0.00" step="0.01" min="0" required>
+                </div>
+                
+                <div class="image-upload-container">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i> Product Image (Optional)
+                    </label>
+                    <div class="image-preview" id="imagePreview">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Click to upload product image</span>
+                        <img id="previewImage" src="" alt="Product Image Preview">
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" class="form-control" style="display: none;">
+                </div>
+                
+                <button type="submit" id="addProductBtn">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
+            </form>
+        </div>
+
+        <!-- Product Display Section -->
+        <div class="product-display">
+            <div class="product-card fade-in" id="productCard">
+                <div class="badge" id="productCounter">Preview</div>
+                <div class="product-image" id="productImage">
+                    <i class="fas fa-box-open default-img"></i>
+                    <img id="displayImage" src="" alt="Product Image">
+                </div>
+                <div class="product-details">
+                    <h4 id="pTitle">Product Preview</h4>
+                    <div class="product-owner">
+                        <i class="fas fa-user"></i>
+                        <span id="pOwner">Owner: Your Name</span>
+                    </div>
+                    <p class="price" id="pPrice">0.00</p>
+                    <div class="product-counter">
+                        <span><i class="fas fa-info-circle"></i> This is how your product will look</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="btn-container">
+                <button id="prevBtn" onclick="showPreviousProduct()">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button id="nextBtn" onclick="showNextProduct()">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><i class="fas fa-info-circle"></i> Products are stored in your browser's local storage</p>
+    </div>
+</div>
+
+<script>
+// Initialize variables
+let products = [];
+let currentIndex = 0;
+let selectedImage = null;
+
+// DOM Elements
+const productCard = document.getElementById('productCard');
+const pTitle = document.getElementById('pTitle');
+const pOwner = document.getElementById('pOwner');
+const pPrice = document.getElementById('pPrice');
+const productImage = document.getElementById('productImage');
+const displayImage = document.getElementById('displayImage');
+const defaultImgIcon = productImage.querySelector('.default-img');
+const imagePreview = document.getElementById('imagePreview');
+const previewImage = document.getElementById('previewImage');
+const imageInput = document.getElementById('imageInput');
+const productCounter = document.getElementById('productCounter');
+const productForm = document.getElementById('productForm');
+const titleInput = document.getElementById('title');
+const ownerInput = document.getElementById('owner');
+const priceInput = document.getElementById('price');
+
+// Load products from localStorage on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    products = storedProducts;
+    
+    // Update preview as user types
+    titleInput.addEventListener('input', updatePreview);
+    ownerInput.addEventListener('input', updatePreview);
+    priceInput.addEventListener('input', updatePreview);
+});
+
+// Update preview in real-time
+function updatePreview() {
+    const title = titleInput.value.trim() || "Product Preview";
+    const owner = ownerInput.value.trim() || "Your Name";
+    const price = priceInput.value || "0.00";
+    
+    pTitle.textContent = title;
+    pOwner.textContent = `Owner: ${owner}`;
+    pPrice.textContent = formatCurrency(price);
+    
+    // Update image preview
+    if (selectedImage) {
+        displayImage.src = selectedImage;
+        displayImage.style.display = 'block';
+        defaultImgIcon.style.display = 'none';
+    } else {
+        displayImage.style.display = 'none';
+        defaultImgIcon.style.display = 'block';
+    }
+}
+
+// Format currency
+function formatCurrency(amount) {
+    const num = parseFloat(amount);
+    if (isNaN(num)) return "0.00";
+    
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(num);
+}
+
+// Handle image preview
+imagePreview.addEventListener('click', () => {
+    imageInput.click();
+});
+
+imageInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+            imagePreview.querySelector('i').style.display = 'none';
+            imagePreview.querySelector('span').style.display = 'none';
+            
+            // Store the image data
+            selectedImage = e.target.result;
+            updatePreview();
+        };
+        
+        reader.readAsDataURL(file);
+    }
+});
+
+// Handle form submission
+productForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const title = titleInput.value.trim();
+    const owner = ownerInput.value.trim();
+    const price = parseFloat(priceInput.value);
+    
+    // Validation
+    if (!title) {
+        alert('Please enter product title');
+        titleInput.focus();
+        return;
+    }
+    
+    if (!owner) {
+        alert('Please enter your name');
+        ownerInput.focus();
+        return;
+    }
+    
+    if (isNaN(price) || price <= 0) {
+        alert('Please enter a valid price greater than 0');
+        priceInput.focus();
+        return;
+    }
+    
+    // Create new product object
+    const newProduct = {
+        title,
+        owner,
+        price,
+        image: selectedImage,
+        dateAdded: new Date().toISOString()
+    };
+    
+    // Get existing products from localStorage
+    let existingProducts = JSON.parse(localStorage.getItem('products')) || [];
+    
+    // Add new product to existing products
+    existingProducts.push(newProduct);
+    
+    // Update localStorage
+    localStorage.setItem('products', JSON.stringify(existingProducts));
+    
+    // Show success message
+    const addBtn = document.getElementById('addProductBtn');
+    const originalText = addBtn.innerHTML;
+    const originalBg = addBtn.style.background;
+    
+    addBtn.innerHTML = '<i class="fas fa-check"></i> Product Added! Redirecting...';
+    addBtn.style.background = 'linear-gradient(135deg, var(--success-color), #2e7d32)';
+    addBtn.disabled = true;
+    
+    // Redirect to Home.html after 2 seconds
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 2000);
+});
+
+// Show next product from existing products
+function showNextProduct() {
+    if (products.length === 0) return;
+    
+    currentIndex = (currentIndex + 1) % products.length;
+    showExistingProduct();
+}
+
+// Show previous product from existing products
+function showPreviousProduct() {
+    if (products.length === 0) return;
+    
+    currentIndex = (currentIndex - 1 + products.length) % products.length;
+    showExistingProduct();
+}
+
+// Display existing product
+function showExistingProduct() {
+    if (products.length === 0) {
+        productCard.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-box-open"></i>
+                <h5>No Products Added Yet</h5>
+                <p>Add your first product using the form</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const product = products[currentIndex];
+    
+    pTitle.textContent = product.title;
+    pOwner.textContent = `Owner: ${product.owner}`;
+    pPrice.textContent = formatCurrency(product.price);
+    productCounter.textContent = `Product ${currentIndex + 1} of ${products.length}`;
+    
+    // Display image if available
+    if (product.image) {
+        displayImage.src = product.image;
+        displayImage.style.display = 'block';
+        defaultImgIcon.style.display = 'none';
+    } else {
+        displayImage.style.display = 'none';
+        defaultImgIcon.style.display = 'block';
+    }
+    
+    // Add animation
+    productCard.classList.remove('fade-in');
+    void productCard.offsetWidth;
+    productCard.classList.add('fade-in');
+}
+
+// Initialize preview
+updatePreview();
+
+// Add keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+        showNextProduct();
+    } else if (e.key === 'ArrowLeft') {
+        showPreviousProduct();
+    }
+});
+</script>
+
+</body>
+</html>
